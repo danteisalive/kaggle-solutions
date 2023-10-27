@@ -8,7 +8,7 @@ from kaggle import api
 start = datetime.strptime(sys.argv[1], "%Y-%m-%d")
 end = datetime.strptime(sys.argv[2], "%Y-%m-%d")
 
-comps = api.competitions_list(page=2)
+comps = api.competitions_list(page=1)
 filepath = os.path.abspath(os.path.dirname(sys.argv[0]))
 filepath = "/".join(os.path.split(filepath)[:-1])
 with open(f"{filepath}/_data/competitions.yml") as fin:
@@ -18,7 +18,7 @@ for comp in comps:
     deadline = getattr(comp, "deadline")
     if start.date() < deadline.date() and deadline.date() < end.date():
         i += 1
-fout = open(f"{os.environ['HOME']}/Desktop/new.txt", "w")
+fout = open(f"{os.environ['HOME']}/Desktop/kaggle-{end.date()}.txt", "w")
 for comp in comps:
     deadline = getattr(comp, "deadline")
     if start.date() < deadline.date() and deadline.date() < end.date():
@@ -36,7 +36,7 @@ for comp in comps:
             metric = metric.replace(":", ";").replace("'", "")
         else:
             metric = "-"
-        link = "https://www.kaggle.com/c/" + comp.ref
+        link = comp.ref
         image = "https://storage.googleapis.com/kaggle-competitions/kaggle/---/logos/thumb76_76.png"
         year = deadline.year
         isHot = "false"
